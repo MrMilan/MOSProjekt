@@ -5,7 +5,7 @@ package Tradiator
     parameter Modelica.SIunits.Temperature TRoo = 20 + 273.15
       "Room temperature"                                                         annotation(Evaluate = false);
     parameter Modelica.SIunits.Power Q_flow_nominal = 1000 "Nominal power";
-    parameter Modelica.SIunits.Temperature T_a_nominal = 273.15 + 45
+    parameter Modelica.SIunits.Temperature T_a_nominal = 273.15 + 40
       "Radiator inlet temperature at nominal condition"                                                                annotation(Evaluate = false);
     parameter Modelica.SIunits.Temperature T_b_nominal = 273.15 + 30
       "Radiator outlet temperature at nominal condition"                                                                annotation(Evaluate = false);
@@ -38,7 +38,7 @@ package Tradiator
 
     Buildings.Fluid.Movers.FlowControlled_dp pump(m_flow_nominal = m_flow_nominal, dp(start = dp_nominal),
       redeclare package Medium = MediumW,
-      m_flow(start=10))                                                                                    annotation(Placement(visible = true, transformation(origin = {-62, 8}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      m_flow(start=m_flow_nominal))                                                                                    annotation(Placement(visible = true, transformation(origin = {-62, 8}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 
     Buildings.Fluid.FixedResistances.FixedResistanceDpM res2(
       redeclare package Medium = MediumW,
@@ -54,14 +54,14 @@ package Tradiator
               {12,55}},                                                                                                    rotation = 0)));
     Buildings.Fluid.Sensors.TemperatureTwoPort temSen(redeclare package Medium
         =        MediumW, m_flow_nominal=m_flow_nominal,
-      T_start=303.15)
+      T_start=293.15)
       annotation (Placement(transformation(extent={{14,-72},{-6,-52}})));
     Modelica.Blocks.Sources.Pulse SwiHea(
-      period=20,
-      nperiod=3,
-      width=30,
+      offset=273.15 + 30,
       amplitude=40,
-      offset=273.15 + 30) "Setpoint temperature"    annotation (Placement(transformation(extent={{34,-28},
+      width=30,
+      period=20,
+      nperiod=3) "Setpoint temperature"             annotation (Placement(transformation(extent={{34,-28},
               {14,-8}})));
     Buildings.Fluid.HeatExchangers.HeaterCooler_T hea(
       redeclare package Medium = MediumW,
@@ -95,8 +95,6 @@ package Tradiator
     annotation(Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})), Diagram(coordinateSystem(extent={{-100,
               -100},{100,100}},                                                                                                    preserveAspectRatio=false,  initialScale = 0.1, grid = {2, 2})));
   end pokojikSKotlem;
-
-
 
   annotation(Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})), Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})),
     uses(Modelica(version="3.2.1"), Buildings(version="2.1.0")));
